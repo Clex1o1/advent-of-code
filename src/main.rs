@@ -2,13 +2,20 @@ mod mod_init;
 use crate::mod_init::init;
 mod mod_mesurements;
 use crate::mod_mesurements::mesurements;
+mod mod_commands;
+use crate::mod_commands::commands;
 
 fn main() {
     // get entries from file
-    let mesurements = init::get_mesurements();
+    let mesurements = init::get_mesurements("mesurements");
+
     // loop through array and print each entry
     day1("day1", &mesurements);
     day2("day2", &mesurements);
+    // Day 3
+    let commands = init::get_file("commands");
+    let position = commands::control(commands);
+    println!("Day 3: {} is the position", position);
 }
 
 fn day1(label: &str, mesurements: &Vec<i32>) {
