@@ -2,6 +2,7 @@ pub mod commands {
     pub struct Position {
         x: i32,
         y: i32,
+        aim: i32,
     }
     // trait Position {
     //     // This new function acts as a constructor
@@ -14,17 +15,24 @@ pub mod commands {
     //     fn sound (&self);
     //    }
     impl Position {
-        pub fn new(x: i32, y: i32) -> Position {
-            Position { x: x, y: y }
+        pub fn new(x: i32, y: i32, aim: i32) -> Position {
+            Position {
+                x: x,
+                y: y,
+                aim: aim,
+            }
         }
         fn up(&mut self, value: i32) {
-            self.y += value * -1;
+            // decreasing aim
+            self.aim -= value;
         }
         fn down(&mut self, value: i32) {
-            self.y -= value * -1;
+            // increasing aim
+            self.aim += value;
         }
         fn forward(&mut self, value: i32) {
             self.x += value;
+            self.y += value * self.aim;
         }
         fn backward(&mut self, value: i32) {
             self.x -= value;
@@ -34,7 +42,7 @@ pub mod commands {
         }
     }
     pub fn control(commands: Vec<String>) -> i32 {
-        let mut position = Position::new(0, 0);
+        let mut position = Position::new(0, 0, 0);
         commands.iter().for_each(|command| {
             let splitted_command = command.split(" ").collect::<Vec<&str>>();
             let command_value = splitted_command.last().unwrap().parse::<i32>().unwrap();
